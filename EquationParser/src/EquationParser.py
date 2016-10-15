@@ -63,7 +63,11 @@ class Multiply(Operator):
 
 class Divide(Operator):
     def evaluate(self):
-        return self.var1.evaluate() / self.var2.evaluate()
+        denominator = self.var2.evaluate()
+        if denominator != 0:
+            return self.var1.evaluate() / denominator
+        else:
+            return float("inf")
         
 ################################################################################
 ################################################################################
@@ -342,6 +346,9 @@ eqn = Equation("0")
 print eqn.evaluate(1., 2., 4.)
          
 eqn = Equation("tan(3.1415926535 / 2)")
+print eqn.evaluate(1., 2., 4.)
+         
+eqn = Equation("y + (x / 0)")
 print eqn.evaluate(1., 2., 4.)
         
         
