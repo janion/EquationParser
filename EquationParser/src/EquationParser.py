@@ -2,6 +2,14 @@
 Created on 14 Oct 2016
 
 @author: Janion
+
+Project to parse functions of x, y & t using operators:
++, -, *, /, sin, cos, tan & sqrt.
+Each individual operation much be surrounded by a pair of brackets
+such that a chain of operations such as:
+"x + y * t - 2"
+would be written as:
+"x + ((y * t) - 2)"
 '''
 
 import abc

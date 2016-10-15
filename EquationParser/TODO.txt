@@ -1,3 +1,7 @@
 - Add support for zero division
+	+ Return float("inf")
 - Parametric equations?
 - +/- from sqrt
+	+ Maybe return array from every operation
+	+ sqrt would return [a, -a]
+	+ When 0 * inf: return array of all z in range
