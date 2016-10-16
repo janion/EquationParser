@@ -42,32 +42,47 @@ class Operator():
 
 class Add(Operator):
     def evaluate(self):
-        return self.var1.evaluate() + self.var2.evaluate()
+        answer = []
+        for x in self.var1.evaluate():
+            for y in self.var2.evaluate():
+                answer.append(x + y)
+        return answer
         
 ################################################################################
 ################################################################################
 
 class Minus(Operator):
     def evaluate(self):
-        return self.var1.evaluate() - self.var2.evaluate()
+        answer = []
+        for x in self.var1.evaluate():
+            for y in self.var2.evaluate():
+                answer.append(x - y)
+        return answer
         
 ################################################################################
 ################################################################################
 
 class Multiply(Operator):
     def evaluate(self):
-        return self.var1.evaluate() * self.var2.evaluate()
+        answer = []
+        for x in self.var1.evaluate():
+            for y in self.var2.evaluate():
+                answer.append(x * y)
+        return answer
         
 ################################################################################
 ################################################################################
 
 class Divide(Operator):
     def evaluate(self):
-        denominator = self.var2.evaluate()
-        if denominator != 0:
-            return self.var1.evaluate() / denominator
-        else:
-            return float("inf")
+        answer = []
+        for x in self.var1.evaluate():
+            for y in self.var2.evaluate():
+                if y != 0:
+                    answer.append(x / y)
+                else:
+                    answer.append(float("inf"))
+        return answer
         
 ################################################################################
 ################################################################################
@@ -89,56 +104,70 @@ class NullOperation(SingleArgumentOperator):
 
 class Sin(SingleArgumentOperator):
     def evaluate(self):
-        return math.sin(self.var1.evaluate())
+        answer = []
+        for x in self.var1.evaluate():
+            answer.append(math.sin(x))
+        return answer
         
 ################################################################################
 ################################################################################
 
 class Cos(SingleArgumentOperator):
     def evaluate(self):
-        return math.cos(self.var1.evaluate())
+        answer = []
+        for x in self.var1.evaluate():
+            answer.append(math.cos(x))
+        return answer
         
 ################################################################################
 ################################################################################
 
 class Tan(SingleArgumentOperator):
     def evaluate(self):
-        return math.tan(self.var1.evaluate())
+        answer = []
+        for x in self.var1.evaluate():
+            answer.append(math.tan(x))
+        return answer
         
 ################################################################################
 ################################################################################
 
 class Sqrt(SingleArgumentOperator):
     def evaluate(self):
-        return math.sqrt(self.var1.evaluate())
+        answer = []
+        for x in self.var1.evaluate():
+            result = math.sqrt(x)
+            answer.append(result)
+            answer.append(-result)
+        return answer
         
 ################################################################################
 ################################################################################
 
 class Constant(SingleArgumentOperator):
     def evaluate(self):
-        return self.var1
+        return [self.var1]
         
 ################################################################################
 ################################################################################
 
 class X(Operator):
     def evaluate(self):
-        return self.equation.getX()
+        return [self.equation.getX()]
         
 ################################################################################
 ################################################################################
 
 class Y(Operator):
     def evaluate(self):
-        return self.equation.getY()
+        return [self.equation.getY()]
         
 ################################################################################
 ################################################################################
 
 class T(Operator):
     def evaluate(self):
-        return self.equation.getT()
+        return [self.equation.getT()]
         
 ################################################################################
 ################################################################################
