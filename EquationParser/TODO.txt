@@ -1,7 +1,7 @@
 - Add support for zero division
 	+ Return float("inf")
 - Parametric equations?
-- +/- from sqrt
-	+ Maybe return array from every operation
-	+ sqrt would return [a, -a]
-	+ When 0 * inf: return array of all z in range
+- When 0 * inf: return array of all z in range
+- Add support for -ve sqrt
+	+ Return None and None check on all operations
+	+ Implement in Operation and call to super in all others?

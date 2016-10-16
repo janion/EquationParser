@@ -379,6 +379,14 @@ print eqn.evaluate(1., 2., 4.)
          
 eqn = Equation("y + (x / 0)")
 print eqn.evaluate(1., 2., 4.)
+         
+eqn = Equation("3 + sqrt( 1 - ( ( (x-3) * (x-3)) + ( (y-3) * (y-3) ) ) )")
+print eqn.evaluate(3., 3., 4.)
+print eqn.evaluate(2., 3., 4.)
+try:
+    print eqn.evaluate(2., 2., 4.)
+except:
+    print "Invalid parameters"
         
         
         
