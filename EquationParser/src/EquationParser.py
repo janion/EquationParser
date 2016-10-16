@@ -390,6 +390,8 @@ except:
     print "Invalid parameters"
         
         
+eqn = Equation("sqrt(sqrt(x))")
+print eqn.evaluate(1., 2., 4.)
         
         
         
