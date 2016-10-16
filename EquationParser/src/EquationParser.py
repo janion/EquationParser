@@ -136,9 +136,10 @@ class Sqrt(SingleArgumentOperator):
     def evaluate(self):
         answer = []
         for x in self.var1.evaluate():
-            result = math.sqrt(x)
-            answer.append(result)
-            answer.append(-result)
+            if x >= 0:
+                result = math.sqrt(x)
+                answer.append(result)
+                answer.append(-result)
         return answer
         
 ################################################################################
