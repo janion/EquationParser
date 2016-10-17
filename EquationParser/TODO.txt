@@ -1,6 +1,2 @@
 - Parametric equations?
-- When 0 * inf: return array of all z in range
-	+ Needs to be handled differently in operations higher in tree. Maybe return "all"
-	  and if v1.eval == "all" or v2.eval "all": return "all"
-	  - Then in equation: if operation.eval == "all" return self.all
 - Implement exp()
