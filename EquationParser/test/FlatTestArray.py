@@ -7,14 +7,14 @@ import wx
 
 class Window(wx.Frame):
     
-    SIZE = 10
+    SIZE = 15
     
     def __init__(self, parent, idd, title):
-        wx.Frame.__init__(self, parent, idd, title, size=(330, 350))
+        wx.Frame.__init__(self, parent, idd, title, size=(30 * (self.SIZE + 1), 30 * (self.SIZE + 2)))
         self.panel = wx.Panel(self, -1)
         self.SetMinSize(self.GetSize())
         
-        self.btns = [[None for y in xrange(10)] for x in xrange(10)]
+        self.btns = [[None for y in xrange(self.SIZE)] for x in xrange(self.SIZE)]
         
         for x in xrange(self.SIZE):
             for y in xrange(self.SIZE):

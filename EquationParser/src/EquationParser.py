@@ -75,8 +75,6 @@ class Minus(Operator):
 ################################################################################
 
 class Multiply(Operator):
-    INF = float("inf")
-    
     def evaluate(self):
         answer = []
         eval1 = self.var1.evaluate()
@@ -87,7 +85,7 @@ class Multiply(Operator):
         
         for x in eval1:
             for y in eval2:
-                if (x == self.INF and y == 0) or (x == 0 and y == self.INF):
+                if (x == self.equation.INF and y == 0) or (x == 0 and y == self.equation.INF):
                     answer = self.equation.ALL
                     break
                 else:
@@ -111,7 +109,7 @@ class Divide(Operator):
                 if y != 0:
                     answer.append(x / y)
                 else:
-                    answer.append(float("inf"))
+                    answer.append(self.equation.INF)
         return answer
         
 ################################################################################
@@ -226,6 +224,7 @@ class T(Operator):
 class Equation():
     
     ALL = "all"
+    INF = float("inf")
     NUMERALS = ".0123456789"
     
     SIN = "sin"
