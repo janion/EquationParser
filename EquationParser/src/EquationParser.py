@@ -43,8 +43,14 @@ class Operator():
 class Add(Operator):
     def evaluate(self):
         answer = []
-        for x in self.var1.evaluate():
-            for y in self.var2.evaluate():
+        eval1 = self.var1.evaluate()
+        eval2 = self.var2.evaluate()
+        
+        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
+            return self.equation.ALL
+        
+        for x in eval1:
+            for y in eval2:
                 answer.append(x + y)
         return answer
         
@@ -54,8 +60,14 @@ class Add(Operator):
 class Minus(Operator):
     def evaluate(self):
         answer = []
-        for x in self.var1.evaluate():
-            for y in self.var2.evaluate():
+        eval1 = self.var1.evaluate()
+        eval2 = self.var2.evaluate()
+        
+        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
+            return self.equation.ALL
+        
+        for x in eval1:
+            for y in eval2:
                 answer.append(x - y)
         return answer
         
@@ -63,11 +75,23 @@ class Minus(Operator):
 ################################################################################
 
 class Multiply(Operator):
+    INF = float("inf")
+    
     def evaluate(self):
         answer = []
-        for x in self.var1.evaluate():
-            for y in self.var2.evaluate():
-                answer.append(x * y)
+        eval1 = self.var1.evaluate()
+        eval2 = self.var2.evaluate()
+        
+        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
+            return self.equation.ALL
+        
+        for x in eval1:
+            for y in eval2:
+                if (x == self.INF and y == 0) or (x == 0 and y == self.INF):
+                    answer = self.equation.ALL
+                    break
+                else:
+                    answer.append(x * y)
         return answer
         
 ################################################################################
@@ -76,8 +100,14 @@ class Multiply(Operator):
 class Divide(Operator):
     def evaluate(self):
         answer = []
-        for x in self.var1.evaluate():
-            for y in self.var2.evaluate():
+        eval1 = self.var1.evaluate()
+        eval2 = self.var2.evaluate()
+        
+        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
+            return self.equation.ALL
+        
+        for x in eval1:
+            for y in eval2:
                 if y != 0:
                     answer.append(x / y)
                 else:
@@ -105,7 +135,12 @@ class NullOperation(SingleArgumentOperator):
 class Sin(SingleArgumentOperator):
     def evaluate(self):
         answer = []
-        for x in self.var1.evaluate():
+        eval1 = self.var1.evaluate()
+        
+        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
+            return self.equation.ALL
+        
+        for x in eval1:
             answer.append(math.sin(x))
         return answer
         
@@ -115,7 +150,12 @@ class Sin(SingleArgumentOperator):
 class Cos(SingleArgumentOperator):
     def evaluate(self):
         answer = []
-        for x in self.var1.evaluate():
+        eval1 = self.var1.evaluate()
+        
+        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
+            return self.equation.ALL
+        
+        for x in eval1:
             answer.append(math.cos(x))
         return answer
         
@@ -125,7 +165,12 @@ class Cos(SingleArgumentOperator):
 class Tan(SingleArgumentOperator):
     def evaluate(self):
         answer = []
-        for x in self.var1.evaluate():
+        eval1 = self.var1.evaluate()
+        
+        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
+            return self.equation.ALL
+        
+        for x in eval1:
             answer.append(math.tan(x))
         return answer
         
@@ -135,7 +180,12 @@ class Tan(SingleArgumentOperator):
 class Sqrt(SingleArgumentOperator):
     def evaluate(self):
         answer = []
-        for x in self.var1.evaluate():
+        eval1 = self.var1.evaluate()
+        
+        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
+            return self.equation.ALL
+        
+        for x in eval1:
             if x >= 0:
                 result = math.sqrt(x)
                 answer.append(result)
@@ -174,6 +224,8 @@ class T(Operator):
 ################################################################################
 
 class Equation():
+    
+    ALL = "all"
     NUMERALS = ".0123456789"
     
     SIN = "sin"
@@ -198,6 +250,7 @@ class Equation():
     
     def __init__(self, string):
         self.operation = self.parseEquation(string)
+        self.setRange(None)
         
 ################################################################################
         
@@ -216,24 +269,28 @@ class Equation():
         
 ################################################################################
         
-    def getMaxZ(self):
-        return range.getMaxZ()
+    def getRange(self):
+        return self.zRange
         
 ################################################################################
         
-    def getMinZ(self):
-        return range.getMinZ()
+    def setRange(self, zRange):
+        self.zRange = zRange
+        self.createIntegerArray()
         
 ################################################################################
     
-    def evaluate(self, x, y, t, zRange=None):
+    def evaluate(self, x, y, t):
         self.x = x
         self.y = y
         self.t = t
-        self.zRange = zRange
         
         if self.operation != None:
-            return self.operation.evaluate()
+            result = self.operation.evaluate()
+            if result == self.ALL:
+                return self.all
+            else:
+                return result
         
 ################################################################################
     
@@ -348,6 +405,19 @@ class Equation():
         return contents[1 : len(contents) - 1]
         
 ################################################################################
+    
+    def createIntegerArray(self):
+        if self.zRange == None:
+            self.all = [float("nan")]
+        else:
+            self.all = [z for z in xrange(self.zRange.getMinZ(), self.zRange.getMaxZ())]
+        
+################################################################################
+    
+    def getAllZ(self):
+        return self.all
+        
+################################################################################
 ################################################################################
 
 class Range():
@@ -402,6 +472,9 @@ print eqn.evaluate(1., 2., 4.)
 eqn = Equation("sqrt((2*x) + y) / t")
 print eqn.evaluate(1., 2., 4.)
          
+eqn = Equation("sqrt(4) + 2")
+print eqn.evaluate(1., 2., 4.)
+         
 eqn = Equation("0")
 print eqn.evaluate(1., 2., 4.)
          
@@ -420,6 +493,10 @@ eqn = Equation("sqrt(sqrt(x))")
 print eqn.evaluate(1., 2., 4.)
         
 eqn = Equation("((1 / 0) * 0) + 7")
+print eqn.evaluate(1., 2., 4.)
+        
+eqn = Equation("((1 / 0) * 0) + 7")
+eqn.setRange(Range(0, 5))
 print eqn.evaluate(1., 2., 4.)
         
         

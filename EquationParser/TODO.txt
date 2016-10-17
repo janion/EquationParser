@@ -1,7 +1,6 @@
-- Add support for zero division
-	+ Return float("inf")
 - Parametric equations?
 - When 0 * inf: return array of all z in range
-- Add support for -ve sqrt
-	+ Return None and None check on all operations
-	+ Implement in Operation and call to super in all others?
+	+ Needs to be handled differently in operations higher in tree. Maybe return "all"
+	  and if v1.eval == "all" or v2.eval "all": return "all"
+	  - Then in equation: if operation.eval == "all" return self.all
+- Implement exp()
