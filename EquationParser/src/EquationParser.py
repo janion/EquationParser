@@ -215,11 +215,22 @@ class Equation():
         return self.t
         
 ################################################################################
+        
+    def getMaxZ(self):
+        return range.getMaxZ()
+        
+################################################################################
+        
+    def getMinZ(self):
+        return range.getMinZ()
+        
+################################################################################
     
-    def evaluate(self, x, y, t):
+    def evaluate(self, x, y, t, zRange=None):
         self.x = x
         self.y = y
         self.t = t
+        self.zRange = zRange
         
         if self.operation != None:
             return self.operation.evaluate()
@@ -337,6 +348,25 @@ class Equation():
         return contents[1 : len(contents) - 1]
         
 ################################################################################
+################################################################################
+
+class Range():
+    def __init__(self, zMin, zMax):
+        self.zMin = zMin
+        self.zMax = zMax
+        
+################################################################################
+    
+    def getMaxZ(self):
+        return self.zMax
+    
+################################################################################
+    
+    def getMinZ(self):
+        return self.zMin
+
+################################################################################
+################################################################################
         
 
 eqn = Equation("((sin((x+1)/t)) * (sin((x+1)/t))) + ((cos((x+1)/t)) * (cos((x+1)/t)))")
@@ -384,13 +414,12 @@ print eqn.evaluate(1., 2., 4.)
 eqn = Equation("3 + sqrt( 1 - ( ( (x-3) * (x-3)) + ( (y-3) * (y-3) ) ) )")
 print eqn.evaluate(3., 3., 4.)
 print eqn.evaluate(2., 3., 4.)
-try:
-    print eqn.evaluate(2., 2., 4.)
-except:
-    print "Invalid parameters"
-        
+print eqn.evaluate(2., 2., 4.)
         
 eqn = Equation("sqrt(sqrt(x))")
+print eqn.evaluate(1., 2., 4.)
+        
+eqn = Equation("((1 / 0) * 0) + 7")
 print eqn.evaluate(1., 2., 4.)
         
         
