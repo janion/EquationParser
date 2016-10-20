@@ -1,2 +1,2 @@
 - Parametric equations?
-- Implement exp()
+- Implement exp, log, abs, modulo
