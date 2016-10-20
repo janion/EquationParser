@@ -114,6 +114,26 @@ class Divide(Operator):
         
 ################################################################################
 ################################################################################
+
+class Modulo(Operator):
+    def evaluate(self):
+        answer = []
+        eval1 = self.var1.evaluate()
+        eval2 = self.var2.evaluate()
+        
+        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
+            return self.equation.ALL
+        
+        for x in eval1:
+            for y in eval2:
+                if y != 0:
+                    answer.append(x % y)
+                else:
+                    answer.append(self.equation.INF)
+        return answer
+        
+################################################################################
+################################################################################
     
 class SingleArgumentOperator(Operator):
     @abc.abstractmethod
@@ -193,6 +213,51 @@ class Sqrt(SingleArgumentOperator):
 ################################################################################
 ################################################################################
 
+class Exp(SingleArgumentOperator):
+    def evaluate(self):
+        answer = []
+        eval1 = self.var1.evaluate()
+        
+        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
+            return self.equation.ALL
+        
+        for x in eval1:
+            answer.append(math.exp(x))
+        return answer
+        
+################################################################################
+################################################################################
+
+class Log(SingleArgumentOperator):
+    def evaluate(self):
+        answer = []
+        eval1 = self.var1.evaluate()
+        
+        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
+            return self.equation.ALL
+        
+        for x in eval1:
+            answer.append(math.log(x))
+        return answer
+        
+################################################################################
+################################################################################
+
+class Abs(SingleArgumentOperator):
+    def evaluate(self):
+        answer = []
+        eval1 = self.var1.evaluate()
+        
+        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
+            return self.equation.ALL
+        
+        for x in eval1:
+            answer.append(abs(x))
+        return answer
+        
+################################################################################
+################################################################################
+
 class Constant(SingleArgumentOperator):
     def evaluate(self):
         return [self.var1]
@@ -231,12 +296,16 @@ class Equation():
     COS = "cos"
     TAN = "tan"
     SQRT = "sqrt"
+    EXP = "exp"
+    LOG = "log"
+    ABS = "abs"
     
     PLUS = "+"
     MINUS = "-"
     MULTIPLY = "*"
     DIVIDE = "/"
-    OPERATIONS = PLUS + MINUS + MULTIPLY + DIVIDE
+    MODULO = "%"
+    OPERATIONS = PLUS + MINUS + MULTIPLY + DIVIDE + MODULO
     
     X = "x"
     Y = "y"
@@ -312,6 +381,8 @@ class Equation():
             return Multiply(self)
         elif char == self.DIVIDE:
             return Divide(self)
+        elif char == self.MODULO:
+            return Modulo(self)
         
 ################################################################################
     
@@ -343,6 +414,21 @@ class Equation():
                 pos += 3 + len(arg) + 2
             elif string[pos : pos + 3] == self.TAN:
                 variable = Tan(self)
+                arg = self.getBracketContents(string[pos + 3 : len(string)])
+                variable.setVar1(self.parseEquation(arg))
+                pos += 3 + len(arg) + 2
+            elif string[pos : pos + 3] == self.EXP:
+                variable = Exp(self)
+                arg = self.getBracketContents(string[pos + 3 : len(string)])
+                variable.setVar1(self.parseEquation(arg))
+                pos += 3 + len(arg) + 2
+            elif string[pos : pos + 3] == self.LOG:
+                variable = Log(self)
+                arg = self.getBracketContents(string[pos + 3 : len(string)])
+                variable.setVar1(self.parseEquation(arg))
+                pos += 3 + len(arg) + 2
+            elif string[pos : pos + 3] == self.ABS:
+                variable = Abs(self)
                 arg = self.getBracketContents(string[pos + 3 : len(string)])
                 variable.setVar1(self.parseEquation(arg))
                 pos += 3 + len(arg) + 2
@@ -496,6 +582,18 @@ print eqn.evaluate(1., 2., 4.)
         
 eqn = Equation("((1 / 0) * 0) + 7")
 eqn.setRange(Range(0, 5))
+print eqn.evaluate(1., 2., 4.)
+        
+eqn = Equation("abs(0-7)")
+print eqn.evaluate(1., 2., 4.)
+        
+eqn = Equation("exp(1)")
+print eqn.evaluate(1., 2., 4.)
+
+eqn = Equation("log(exp(1))")
+print eqn.evaluate(1., 2., 4.)
+
+eqn = Equation("11 % 7")
 print eqn.evaluate(1., 2., 4.)
         
         
