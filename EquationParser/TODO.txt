@@ -1,3 +1,2 @@
 - Parametric equations?
-- Implement exp, log, abs, modulo
 - Add tests
