@@ -15,7 +15,7 @@ would be written as:
 import abc
 import math
 
-class Operator():
+class Operator(object):
     __metaclass__  = abc.ABCMeta
     
     def __init__(self, equation):
@@ -46,9 +46,6 @@ class Add(Operator):
         eval1 = self.var1.evaluate()
         eval2 = self.var2.evaluate()
         
-        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
-            return self.equation.ALL
-        
         for x in eval1:
             for y in eval2:
                 answer.append(x + y)
@@ -62,9 +59,6 @@ class Minus(Operator):
         answer = []
         eval1 = self.var1.evaluate()
         eval2 = self.var2.evaluate()
-        
-        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
-            return self.equation.ALL
         
         for x in eval1:
             for y in eval2:
@@ -80,16 +74,9 @@ class Multiply(Operator):
         eval1 = self.var1.evaluate()
         eval2 = self.var2.evaluate()
         
-        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
-            return self.equation.ALL
-        
         for x in eval1:
             for y in eval2:
-                if (x == self.equation.INF and y == 0) or (x == 0 and y == self.equation.INF):
-                    answer = self.equation.ALL
-                    break
-                else:
-                    answer.append(x * y)
+                answer.append(x * y)
         return answer
         
 ################################################################################
@@ -100,9 +87,6 @@ class Divide(Operator):
         answer = []
         eval1 = self.var1.evaluate()
         eval2 = self.var2.evaluate()
-        
-        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
-            return self.equation.ALL
         
         for x in eval1:
             for y in eval2:
@@ -120,9 +104,6 @@ class Modulo(Operator):
         answer = []
         eval1 = self.var1.evaluate()
         eval2 = self.var2.evaluate()
-        
-        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
-            return self.equation.ALL
         
         for x in eval1:
             for y in eval2:
@@ -155,9 +136,6 @@ class Sin(SingleArgumentOperator):
         answer = []
         eval1 = self.var1.evaluate()
         
-        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
-            return self.equation.ALL
-        
         for x in eval1:
             answer.append(math.sin(x))
         return answer
@@ -169,9 +147,6 @@ class Cos(SingleArgumentOperator):
     def evaluate(self):
         answer = []
         eval1 = self.var1.evaluate()
-        
-        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
-            return self.equation.ALL
         
         for x in eval1:
             answer.append(math.cos(x))
@@ -185,9 +160,6 @@ class Tan(SingleArgumentOperator):
         answer = []
         eval1 = self.var1.evaluate()
         
-        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
-            return self.equation.ALL
-        
         for x in eval1:
             answer.append(math.tan(x))
         return answer
@@ -199,9 +171,6 @@ class Sqrt(SingleArgumentOperator):
     def evaluate(self):
         answer = []
         eval1 = self.var1.evaluate()
-        
-        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
-            return self.equation.ALL
         
         for x in eval1:
             if x >= 0:
@@ -218,9 +187,6 @@ class Exp(SingleArgumentOperator):
         answer = []
         eval1 = self.var1.evaluate()
         
-        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
-            return self.equation.ALL
-        
         for x in eval1:
             answer.append(math.exp(x))
         return answer
@@ -233,9 +199,6 @@ class Log(SingleArgumentOperator):
         answer = []
         eval1 = self.var1.evaluate()
         
-        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
-            return self.equation.ALL
-        
         for x in eval1:
             answer.append(math.log(x))
         return answer
@@ -247,9 +210,6 @@ class Abs(SingleArgumentOperator):
     def evaluate(self):
         answer = []
         eval1 = self.var1.evaluate()
-        
-        if eval1 == self.equation.ALL or eval1 == self.equation.ALL:
-            return self.equation.ALL
         
         for x in eval1:
             answer.append(abs(x))
@@ -288,7 +248,6 @@ class T(Operator):
 
 class Equation():
     
-    ALL = "all"
     INF = float("inf")
     NUMERALS = ".0123456789"
     
@@ -318,7 +277,6 @@ class Equation():
     
     def __init__(self, string):
         self.operation = self.parseEquation(string)
-        self.setRange(None)
         
 ################################################################################
         
@@ -336,17 +294,6 @@ class Equation():
         return self.t
         
 ################################################################################
-        
-    def getRange(self):
-        return self.zRange
-        
-################################################################################
-        
-    def setRange(self, zRange):
-        self.zRange = zRange
-        self.createIntegerArray()
-        
-################################################################################
     
     def evaluate(self, x, y, t):
         self.x = x
@@ -354,11 +301,7 @@ class Equation():
         self.t = t
         
         if self.operation != None:
-            result = self.operation.evaluate()
-            if result == self.ALL:
-                return self.all
-            else:
-                return result
+            return self.operation.evaluate()
         
 ################################################################################
     
@@ -490,111 +433,7 @@ class Equation():
         return contents[1 : len(contents) - 1]
         
 ################################################################################
-    
-    def createIntegerArray(self):
-        if self.zRange == None:
-            self.all = [float("nan")]
-        else:
-            self.all = [z for z in xrange(self.zRange.getMinZ(), self.zRange.getMaxZ())]
-        
 ################################################################################
-    
-    def getAllZ(self):
-        return self.all
-        
-################################################################################
-################################################################################
-
-class Range():
-    def __init__(self, zMin, zMax):
-        self.zMin = zMin
-        self.zMax = zMax
-        
-################################################################################
-    
-    def getMaxZ(self):
-        return self.zMax
-    
-################################################################################
-    
-    def getMinZ(self):
-        return self.zMin
-
-################################################################################
-################################################################################
-        
-
-eqn = Equation("((sin((x+1)/t)) * (sin((x+1)/t))) + ((cos((x+1)/t)) * (cos((x+1)/t)))")
-print eqn.evaluate(1., 2., 4.)
-         
-eqn = Equation("sin((x+1)/t) * sin((x+1)/t)")
-print eqn.evaluate(1., 2., 4.)
-         
-eqn = Equation("cos((x+1)/t) * cos((x+1)/t)")
-print eqn.evaluate(1., 2., 4.)
-         
-eqn = Equation("(sin((x+1)/t) * sin((x+1)/t)) + (cos((x+1)/t) * cos((x+1)/t))")
-print eqn.evaluate(1., 2., 4.)
-         
-eqn = Equation("(1+x)/t")
-print eqn.evaluate(1., 2., 4.)
-
-eqn = Equation("(y-1)/t")
-print eqn.evaluate(1., 2., 4.)
-         
-eqn = Equation("1.12*x")
-print eqn.evaluate(1., 2., 4.)
-         
-eqn = Equation("(1.12*x)+y")
-print eqn.evaluate(1., 2., 4.)
-         
-eqn = Equation("sin(t)")
-print eqn.evaluate(1., 2., 4.)
-         
-eqn = Equation("sqrt(t)")
-print eqn.evaluate(1., 2., 4.)
-         
-eqn = Equation("sqrt((2*x) + y) / t")
-print eqn.evaluate(1., 2., 4.)
-         
-eqn = Equation("sqrt(4) + 2")
-print eqn.evaluate(1., 2., 4.)
-         
-eqn = Equation("0")
-print eqn.evaluate(1., 2., 4.)
-         
-eqn = Equation("tan(3.1415926535 / 2)")
-print eqn.evaluate(1., 2., 4.)
-         
-eqn = Equation("y + (x / 0)")
-print eqn.evaluate(1., 2., 4.)
-         
-eqn = Equation("3 + sqrt( 1 - ( ( (x-3) * (x-3)) + ( (y-3) * (y-3) ) ) )")
-print eqn.evaluate(3., 3., 4.)
-print eqn.evaluate(2., 3., 4.)
-print eqn.evaluate(2., 2., 4.)
-        
-eqn = Equation("sqrt(sqrt(x))")
-print eqn.evaluate(1., 2., 4.)
-        
-eqn = Equation("((1 / 0) * 0) + 7")
-print eqn.evaluate(1., 2., 4.)
-        
-eqn = Equation("((1 / 0) * 0) + 7")
-eqn.setRange(Range(0, 5))
-print eqn.evaluate(1., 2., 4.)
-        
-eqn = Equation("abs(0-7)")
-print eqn.evaluate(1., 2., 4.)
-        
-eqn = Equation("exp(1)")
-print eqn.evaluate(1., 2., 4.)
-
-eqn = Equation("log(exp(1))")
-print eqn.evaluate(1., 2., 4.)
-
-eqn = Equation("11 % 7")
-print eqn.evaluate(1., 2., 4.)
         
         
         
