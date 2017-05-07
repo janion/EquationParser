@@ -1,2 +1,5 @@
 - Parametric equations?
 - Add tests
+- Refactor classes into package structure
+- Handle negative numbers properly
+- Add order of operations such that use does not need to add brackets?
