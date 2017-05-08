@@ -15,6 +15,7 @@ would be written as:
 import abc
 import math
 from src.OrderOfOperations import OrderOfOperations
+from src.NegativeNumberAdjuster import NegativeNumberAdjuster
 
 class Operator(object):
     __metaclass__  = abc.ABCMeta
@@ -292,9 +293,11 @@ class Equation():
     CLOSE_BRACKET = ")"
     
     def __init__(self, string):
-        order = OrderOfOperations()
-        orderedString = order.addBrackets(string)
-        self.operation = self.parseEquation(orderedString)
+        orderer = OrderOfOperations()
+        orderedString = orderer.addBrackets(string)
+        adjuster = NegativeNumberAdjuster()
+        adjustedString = adjuster.adjust(orderedString)
+        self.operation = self.parseEquation(adjustedString)
         
 ################################################################################
         
