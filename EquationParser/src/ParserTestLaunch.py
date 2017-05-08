@@ -78,3 +78,6 @@ if __name__ == '__main__':
     
     eqn = Equation("11 % 7")
     print eqn.evaluate(1., 2., 4.)
+    
+    eqn = Equation("2 ^ 9")
+    print eqn.evaluate(1., 2., 4.)

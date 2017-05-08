@@ -115,6 +115,20 @@ class Modulo(Operator):
         
 ################################################################################
 ################################################################################
+
+class Power(Operator):
+    def evaluate(self):
+        answer = []
+        eval1 = self.var1.evaluate()
+        eval2 = self.var2.evaluate()
+        
+        for x in eval1:
+            for y in eval2:
+                answer.append(math.pow(x, y))
+        return answer
+        
+################################################################################
+################################################################################
     
 class SingleArgumentOperator(Operator):
     @abc.abstractmethod
@@ -264,7 +278,8 @@ class Equation():
     MULTIPLY = "*"
     DIVIDE = "/"
     MODULO = "%"
-    OPERATIONS = PLUS + MINUS + MULTIPLY + DIVIDE + MODULO
+    POWER = "^"
+    OPERATIONS = PLUS + MINUS + MULTIPLY + DIVIDE + MODULO + POWER
     
     X = "x"
     Y = "y"
@@ -326,6 +341,8 @@ class Equation():
             return Divide(self)
         elif char == self.MODULO:
             return Modulo(self)
+        elif char == self.POWER:
+            return Power(self)
         
 ################################################################################
     
