@@ -22,16 +22,14 @@ class OrderOfOperations(object):
     SPACE = " "
 
     def addBrackets(self, fnString):
-        copy = self.OPEN_BRACKET + fnString.replace(self.SPACE, "") + self.CLOSE_BRACKET
-#         copy = fnString.replace(self.SPACE, "")
+        copy = fnString.replace(self.SPACE, "")
         
         # Invoke order of operations
         copy = self.prioritiseOperationRightToLeft(copy, self.POWER)
         copy = self.prioritiseOperationsLeftToRight(copy, self.MULTIPLY, self.DIVIDE)
         copy = self.prioritiseOperationsLeftToRight(copy, self.PLUS, self.MINUS)
         
-        return copy[1 : -1]
-#         return copy
+        return copy
                 
 ################################################################################
                 
@@ -113,7 +111,7 @@ class OrderOfOperations(object):
             if char in self.OPERATIONS and bracketCount == 0:
                 return x
         
-        return len(string) - 1
+        return len(string)
                 
 ################################################################################
                 
@@ -126,52 +124,10 @@ class OrderOfOperations(object):
             elif char == self.CLOSE_BRACKET:
                 bracketCount -= 1
             elif char in self.OPERATIONS:
-                if hasSeenOperation and bracketCount == 1:
+                if bracketCount == 0:
+                    if hasSeenOperation:
                         return True
-                hasSeenOperation = True
+                    hasSeenOperation = True
         
         return False
-                
-################################################################################
-                
-#     def needsMoreBrackets(self, string):
-#         hasSeenOperation = False
-#         for char in string:
-#             if char in self.OPERATIONS:
-#                 if hasSeenOperation:
-#                     return True
-#                 hasSeenOperation = True
-#             elif char == self.OPEN_BRACKET or char == self.CLOSE_BRACKET:
-#                 hasSeenOperation = False
-#         
-#         return False
-                
-################################################################################
-################################################################################
-
-o = OrderOfOperations()
-
-fn = "251"
-print fn, " -> ", o.addBrackets(fn), "\n"
-  
-fn = "25 + 1"
-print fn, " -> ", o.addBrackets(fn), "\n"
-
-fn = "25 / (7 + 1) ^ 9 * (sin(t) - 4)"
-print fn, " -> ", o.addBrackets(fn), "\n"
-
-fn = "7 * 9 / 7 * 9"
-print fn, " -> ", o.addBrackets(fn), "\n"
-  
-fn = "7 / 9 * 7 / 9"
-print fn, " -> ", o.addBrackets(fn), "\n"
-  
-fn = "2 * 5 / 6 * 4"
-print fn, " -> ", o.addBrackets(fn), "\n"
-  
-fn = "2 ^ 5 ^ 6 ^ 4"
-print fn, " -> ", OrderOfOperations().addBrackets(fn), "\n"
-  
-fn = "2 ^ 5 ^ 6 ^ 4 + 3"
-print fn, " -> ", o.addBrackets(fn), "\n"
     
