@@ -23,6 +23,7 @@ class OrderOfOperations(object):
 
     def addBrackets(self, fnString):
         copy = self.OPEN_BRACKET + fnString.replace(self.SPACE, "") + self.CLOSE_BRACKET
+#         copy = fnString.replace(self.SPACE, "")
         
         # Invoke order of operations
         copy = self.prioritiseOperationRightToLeft(copy, self.POWER)
@@ -30,18 +31,19 @@ class OrderOfOperations(object):
         copy = self.prioritiseOperationsLeftToRight(copy, self.PLUS, self.MINUS)
         
         return copy[1 : -1]
+#         return copy
                 
 ################################################################################
                 
     def prioritiseOperationRightToLeft(self, string, operationChar):
-        while operationChar in string:
-            for x in range(len(string)):
+        while operationChar in string and self.needsMoreBrackets(string):
+            for x in range(len(string) - 1, -1, -1):
                 if string[x] == operationChar:
-                    start = self.getContainingBracketStart(string, x)
-                    end = self.getContainingBracketEnd(string, x)
+                    start = self.getContainingBracketStart(string, x-1)
+                    end = self.getContainingBracketEnd(string, x+1)
                     
-                    firstOperand = self.bracketiseOperand(string[start : x])
-                    secondOperand = self.bracketiseOperand(string[x + 1 : end])
+                    firstOperand = self.OPEN_BRACKET + string[start : x]
+                    secondOperand = string[x + 1 : end] + self.CLOSE_BRACKET
                             
                     string = (string[ : start]
                               + firstOperand
@@ -56,27 +58,25 @@ class OrderOfOperations(object):
 ################################################################################
                 
     def prioritiseOperationsLeftToRight(self, string, operationChar1, operationChar2):
-        while operationChar1 in string or operationChar2 in string:
-            for x in range(len(string) - 1, -1, -1):
-#             for x in range(len(string)):
+        while (operationChar1 in string or operationChar2 in string) and self.needsMoreBrackets(string):
+            for x in range(len(string)):
                 if string[x] == operationChar1:
-                    string = self.bracketiseOperation(string, x, operationChar1, self.PLACE_HOLDER1)
+                    string = self.bracketiseString(string, x, self.PLACE_HOLDER1)
                     break
                 elif string[x] == operationChar2:
-                    string = self.bracketiseOperation(string, x, operationChar2, self.PLACE_HOLDER2)
+                    string = self.bracketiseString(string, x, self.PLACE_HOLDER2)
                     break
                 
         return string.replace(self.PLACE_HOLDER1, operationChar1).replace(self.PLACE_HOLDER2, operationChar2)
                 
 ################################################################################
                 
-    def bracketiseOperation(self, string, pos, operationChar, placeHolderChar):
-        start = self.getContainingBracketStart(string, pos)
-        end = self.getContainingBracketEnd(string, pos)
-#         end = self.getContainingBracketEnd(string, pos + 1, operationChar)
+    def bracketiseString(self, string, pos, placeHolderChar):
+        start = self.getContainingBracketStart(string, pos - 1)
+        end = self.getContainingBracketEnd(string, pos + 1)
         
-        firstOperand = self.bracketiseOperand(string[start : pos])
-        secondOperand = self.bracketiseOperand(string[pos + 1 : end])
+        firstOperand = self.OPEN_BRACKET + string[start : pos]
+        secondOperand = string[pos + 1 : end] + self.CLOSE_BRACKET
                 
         return (string[ : start]
                 + firstOperand
@@ -87,73 +87,91 @@ class OrderOfOperations(object):
                 
 ################################################################################
                 
-    def bracketiseOperand(self, operand):
-        if not (operand.startswith(self.OPEN_BRACKET) and operand.endswith(self.CLOSE_BRACKET)):
-            for operation in self.OPERATIONS:
-                if operation in operand:
-                    operand = self.OPEN_BRACKET + operand + self.CLOSE_BRACKET
-                    break
-        return operand
-                
-################################################################################
-                
     def getContainingBracketStart(self, string, pos):
         bracketCount = 0
         for x in range(pos, -1, -1):
-            if string[x] == self.OPEN_BRACKET:
-                if bracketCount == 0:
-                    start = x + 1
-                    break
+            char = string[x]
+            if char == self.OPEN_BRACKET:
                 bracketCount += 1
-            elif string[x] == self.CLOSE_BRACKET:
+            elif char == self.CLOSE_BRACKET:
                 bracketCount -= 1
+            if char in self.OPERATIONS and bracketCount == 0:
+                return x + 1
         
-        return start
+        return 0
                 
 ################################################################################
                 
-#     def getContainingBracketEnd(self, string, pos, operationChar):
     def getContainingBracketEnd(self, string, pos):
         bracketCount = 0
         for x in range(pos, len(string)):
-            if string[x] == self.OPEN_BRACKET:
+            char = string[x]
+            if char == self.OPEN_BRACKET:
                 bracketCount += 1
-            elif string[x] == self.CLOSE_BRACKET:
-                if bracketCount == 0:
-                    end = x
-                    break
+            elif char == self.CLOSE_BRACKET:
                 bracketCount -= 1
-#             elif string[x] == operationChar and bracketCount == 0:
-#                 end = x
-#                 break
+            if char in self.OPERATIONS and bracketCount == 0:
+                return x
         
-        return end
+        return len(string) - 1
+                
+################################################################################
+                
+    def needsMoreBrackets(self, string):
+        bracketCount = 0
+        hasSeenOperation = False
+        for char in string:
+            if char == self.OPEN_BRACKET:
+                bracketCount += 1
+            elif char == self.CLOSE_BRACKET:
+                bracketCount -= 1
+            elif char in self.OPERATIONS:
+                if hasSeenOperation and bracketCount == 1:
+                        return True
+                hasSeenOperation = True
+        
+        return False
+                
+################################################################################
+                
+#     def needsMoreBrackets(self, string):
+#         hasSeenOperation = False
+#         for char in string:
+#             if char in self.OPERATIONS:
+#                 if hasSeenOperation:
+#                     return True
+#                 hasSeenOperation = True
+#             elif char == self.OPEN_BRACKET or char == self.CLOSE_BRACKET:
+#                 hasSeenOperation = False
+#         
+#         return False
+                
+################################################################################
+################################################################################
 
-fn = "25 / (x + 1) + y * (sin(t) - 4)"
 o = OrderOfOperations()
-print fn, " -> ", o.addBrackets(fn)
 
-print ""
+fn = "251"
+print fn, " -> ", o.addBrackets(fn), "\n"
+  
+fn = "25 + 1"
+print fn, " -> ", o.addBrackets(fn), "\n"
 
-fn = "x * y / x * y"
-o = OrderOfOperations()
-print fn, " -> ", o.addBrackets(fn)
+fn = "25 / (7 + 1) ^ 9 * (sin(t) - 4)"
+print fn, " -> ", o.addBrackets(fn), "\n"
 
-print ""
-
-fn = "x / y * x / y"
-o = OrderOfOperations()
-print fn, " -> ", o.addBrackets(fn)
-
-print ""
-
+fn = "7 * 9 / 7 * 9"
+print fn, " -> ", o.addBrackets(fn), "\n"
+  
+fn = "7 / 9 * 7 / 9"
+print fn, " -> ", o.addBrackets(fn), "\n"
+  
 fn = "2 * 5 / 6 * 4"
-o = OrderOfOperations()
-print fn, " -> ", o.addBrackets(fn)
-
-print ""
-
+print fn, " -> ", o.addBrackets(fn), "\n"
+  
 fn = "2 ^ 5 ^ 6 ^ 4"
-o = OrderOfOperations()
-print fn, " -> ", o.addBrackets(fn)
+print fn, " -> ", OrderOfOperations().addBrackets(fn), "\n"
+  
+fn = "2 ^ 5 ^ 6 ^ 4 + 3"
+print fn, " -> ", o.addBrackets(fn), "\n"
     
