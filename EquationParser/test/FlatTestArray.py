@@ -7,7 +7,7 @@ import wx
 
 class Window(wx.Frame):
     
-    SIZE = 15
+    SIZE = 10
     
     def __init__(self, parent, idd, title):
         wx.Frame.__init__(self, parent, idd, title, size=(30 * (self.SIZE + 1), 30 * (self.SIZE + 2)))

@@ -49,10 +49,10 @@ if __name__ == '__main__':
     
 #     # Folding lines?
 #     function = "sin(t + ((x - 5) + (t * (y - 5)))) + 1"
-    # Outward propagating sine rings
-    function = "sin(sqrt(((x - 4.5) * (x - 4.5)) + ((y - 4.5) * (y - 4.5))) - (4 * t)) + 1"
-#     # Oscillating sine rings
-#     function = "sin(sqrt(((x - 4.5) * (x - 4.5)) + ((y - 4.5) * (y - 4.5))) - (2 * sin(t))) + 1"
+#     # Outward propagating sine rings
+#     function = "sin(sqrt(((x - 4.5) * (x - 4.5)) + ((y - 4.5) * (y - 4.5))) - (4 * t)) + 1"
+    # Oscillating sine rings
+    function = "sin(sqrt(((x - 4.5) * (x - 4.5)) + ((y - 4.5) * (y - 4.5))) - (2 * sin(t))) + 1"
 #     # Diagonal moving waves
 #     function = "sin(((x - 4.5) + (y - 4.5)) - (8 * t)) + 1"
 #     # Spinning lines
