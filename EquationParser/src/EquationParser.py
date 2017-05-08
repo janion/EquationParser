@@ -4,7 +4,7 @@ Created on 14 Oct 2016
 @author: Janion
 
 Project to parse functions of x, y & t using operators:
-+, -, *, /, sin, cos, tan & sqrt.
++, -, *, /, sin, cos, tan, exp, log, abs & sqrt.
 Each individual operation much be surrounded by a pair of brackets
 such that a chain of operations such as:
 "x + y * t - 2"
@@ -390,6 +390,8 @@ class Equation():
                 pos += 1
             elif char == self.SPACE:
                 pos += 1
+            else:
+                raise RuntimeError("Unrecognised character: \"%s\" in equation:\n\"%s\"" %(char, string))
             
             if v1 == None and variable != None:
                 v1 = variable
