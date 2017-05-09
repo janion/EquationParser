@@ -18,3 +18,7 @@ The supported functions are:
 - abs Modulus
 
 Order of operations is supported by modifying the string to match one where all brackets contain only a single operation.
+
+## Future work:
+- Add support for multiplication without the "*" operator explicitly used (eg. "2x" or "x(x + 2)").
+- Add support for arbitrary variables instead of limiting to x, y & t.
