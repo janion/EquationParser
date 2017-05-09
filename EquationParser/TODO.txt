@@ -1,5 +1,5 @@
 - Parametric equations?
 - Add tests
 - Refactor classes into package structure
-- Handle negative numbers properly
-- Add order of operations such that use does not need to add brackets?
+- Handle multiplications without * symbol? eg "2x" or "x(x+1)"
+- Handle arbitrary constant names (single letter? multiple letter?)
