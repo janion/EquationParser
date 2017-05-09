@@ -4,9 +4,9 @@
 This python library will take a function of variables x, y & t in plain text from and convert it into an object which can be evaluated given the values of x, y & t.
 
 The supported functions are:
-- + Plus
-- - Minus
-- * Multiply
+- \+ Plus
+- \- Minus
+- \* Multiply
 - / Divide
 - % Modulo
 - ^ Power
