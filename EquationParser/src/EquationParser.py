@@ -14,8 +14,8 @@ would be written as:
 
 import abc
 import math
-from src.OrderOfOperations import OrderOfOperations
-from src.NegativeNumberAdjuster import NegativeNumberAdjuster
+from OrderOfOperations import OrderOfOperations
+from NegativeNumberAdjuster import NegativeNumberAdjuster
 
 class Operator(object):
     __metaclass__  = abc.ABCMeta

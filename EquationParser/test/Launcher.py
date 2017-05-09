@@ -6,9 +6,9 @@ Created on 8 Apr 2016
 
 import wx
 import time
-from test.FlatTestArray import Window
+from FlatTestArray import Window
 from threading import Thread
-from src.EquationParser import Equation
+from EquationParser import Equation
         
 ################################################################################
 
@@ -43,20 +43,21 @@ def displayFunction(window, functionText):
 
 if __name__ == '__main__':
     app = wx.App()
-    # Create a socket listener
-    window = Window(None, -1, "Title")
-    window.Show()
     
-#     # Folding lines?
-#     function = "sin(t + ((x - 5) + (t * (y - 5)))) + 1"
-#     # Outward propagating sine rings
-#     function = "sin(sqrt(((x - 4.5) * (x - 4.5)) + ((y - 4.5) * (y - 4.5))) - (4 * t)) + 1"
-    # Oscillating sine rings
-    function = "sin(sqrt(((x - 4.5) * (x - 4.5)) + ((y - 4.5) * (y - 4.5))) - (2 * sin(t))) + 1"
+    # # Folding lines?
+    # function = "sin(t + ((x - 5) + (t * (y - 5)))) + 1"
+    # Outward propagating sine rings
+    function = "sin(sqrt(((x - 4.5) * (x - 4.5)) + ((y - 4.5) * (y - 4.5))) - (4 * t)) + 1"
+#     # Oscillating sine rings
+#     function = "sin(sqrt(((x - 4.5) * (x - 4.5)) + ((y - 4.5) * (y - 4.5))) - (2 * sin(t))) + 1"
 #     # Diagonal moving waves
 #     function = "sin(((x - 4.5) + (y - 4.5)) - (8 * t)) + 1"
 #     # Spinning lines
 #     function = "sin(((x - 4.5) * sin(t)) + ((y - 4.5) * cos(t))) + 1"
+
+    # Create a window
+    window = Window(None, -1, function)
+    window.Show()
 
     workThread = Thread(target = displayFunction, args=(window, function) )
     workThread.start()
