@@ -19,6 +19,8 @@ The supported functions are:
 
 Order of operations is supported by modifying the string to match one where all brackets contain only a single operation.
 
+Disclaimer: This is not yet unit tested, only exploritory tested.
+
 ## Future work:
 - Add support for multiplication without the "*" operator explicitly used (eg. "2x" or "x(x + 2)").
 - Add support for arbitrary variables instead of limiting to x, y & t.
