@@ -25,7 +25,7 @@ class NegativeNumberAdjuster(object):
         while self.MINUS in fnString:
             for x in range(len(fnString)):
                 if fnString[x] == self.MINUS:
-                    if (fnString[x - 1] in self.OPERATIONS or fnString[x - 1] == self.OPEN_BRACKET or x == 0):
+                    if (fnString[x - 1] in self.OPERATIONS or fnString[x - 1] == self.OPEN_BRACKET or fnString[x - 1] == self.PLACE_HOLDER or x == 0):
                         followingOperand = self.findFollowingOperand(fnString, x + 1)
                         fnString = (fnString[ : x]
                                     + self.OPEN_BRACKET

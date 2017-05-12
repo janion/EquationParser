@@ -1,4 +1,3 @@
-- Parametric equations?
 - Add tests
 - Refactor classes into package structure
 - Handle multiplications without * symbol? eg "2x" or "x(x+1)"
