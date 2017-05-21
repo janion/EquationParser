@@ -34,15 +34,15 @@ class OrderOfOperations(object):
 ################################################################################
                 
     def prioritiseOperationRightToLeft(self, string, operationChar):
-        while operationChar in string and self.needsMoreBrackets(string):
+        while operationChar in string and self.needsMoreBracketsForOperation(string, [operationChar], [self.PLACE_HOLDER1]):
             for x in range(len(string) - 1, -1, -1):
                 if string[x] == operationChar:
                     start = self.getContainingBracketStart(string, x-1)
                     end = self.getContainingBracketEnd(string, x+1)
-                    
+
                     firstOperand = self.OPEN_BRACKET + string[start : x]
                     secondOperand = string[x + 1 : end] + self.CLOSE_BRACKET
-                            
+
                     string = (string[ : start]
                               + firstOperand
                               + self.PLACE_HOLDER1
@@ -56,12 +56,14 @@ class OrderOfOperations(object):
 ################################################################################
                 
     def prioritiseOperationsLeftToRight(self, string, operationChar1, operationChar2):
-        while (operationChar1 in string or operationChar2 in string) and self.needsMoreBrackets(string):
+        while (operationChar1 in string or operationChar2 in string)\
+                and self.needsMoreBracketsForOperation(string, [operationChar1, operationChar2], [self.PLACE_HOLDER1, self.PLACE_HOLDER2]):
             for x in range(len(string)):
-                if string[x] == operationChar1:
+                char = string[x]
+                if char == operationChar1:
                     string = self.bracketiseString(string, x, self.PLACE_HOLDER1)
                     break
-                elif string[x] == operationChar2:
+                elif char == operationChar2:
                     string = self.bracketiseString(string, x, self.PLACE_HOLDER2)
                     break
                 
@@ -72,9 +74,14 @@ class OrderOfOperations(object):
     def bracketiseString(self, string, pos, placeHolderChar):
         start = self.getContainingBracketStart(string, pos - 1)
         end = self.getContainingBracketEnd(string, pos + 1)
-        
-        firstOperand = self.OPEN_BRACKET + string[start : pos]
-        secondOperand = string[pos + 1 : end] + self.CLOSE_BRACKET
+
+        firstOperand = string[start : pos]
+        secondOperand = string[pos + 1 : end]
+
+        if (string[start] != self.OPEN_BRACKET or (end < len(string) and string[end] != self.CLOSE_BRACKET))\
+                and not (start == 0 and end == len(string)):
+            firstOperand = self.OPEN_BRACKET + firstOperand
+            secondOperand = secondOperand + self.CLOSE_BRACKET
                 
         return (string[ : start]
                 + firstOperand
@@ -95,6 +102,8 @@ class OrderOfOperations(object):
                 bracketCount -= 1
             if char in self.OPERATIONS and bracketCount == 0:
                 return x + 1
+            elif bracketCount == 1:
+                return x
         
         return 0
                 
@@ -110,24 +119,36 @@ class OrderOfOperations(object):
                 bracketCount -= 1
             if char in self.OPERATIONS and bracketCount == 0:
                 return x
+            elif bracketCount == -1:
+                return x
         
         return len(string)
-                
+
 ################################################################################
-                
-    def needsMoreBrackets(self, string):
+
+    def needsMoreBracketsForOperation(self, string, operations, placeHolders):
         bracketCount = 0
-        hasSeenOperation = False
+        openBrackerCount = string.count(self.OPEN_BRACKET) + 1
+        hasSeenAnyOperation = [False for x in range(openBrackerCount)]
+        hasSeenTheseOperations = [False for x in range(openBrackerCount)]
+
         for char in string:
             if char == self.OPEN_BRACKET:
                 bracketCount += 1
             elif char == self.CLOSE_BRACKET:
+                hasSeenAnyOperation[bracketCount] = False
+                hasSeenTheseOperations[bracketCount] = False
                 bracketCount -= 1
+            elif char in operations or char in placeHolders:
+                if hasSeenTheseOperations[bracketCount]:
+                    return True
+                hasSeenTheseOperations[bracketCount] = True
             elif char in self.OPERATIONS:
-                if bracketCount == 0:
-                    if hasSeenOperation:
-                        return True
-                    hasSeenOperation = True
-        
+                if hasSeenAnyOperation[bracketCount]:
+                    return True
+                hasSeenAnyOperation[bracketCount] = True
+
+            if hasSeenTheseOperations[bracketCount] and hasSeenAnyOperation[bracketCount]:
+                return True
+
         return False
-    

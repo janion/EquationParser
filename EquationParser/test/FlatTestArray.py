@@ -24,30 +24,3 @@ class Window(wx.Frame):
     
     def setColour(self, position, red, green, blue):
         self.btns[position[0]][position[1]].SetBackgroundColour((red, green, blue))
-        self.btns[position[0]][position[1]].Refresh()
-    
-    def setColourByString(self, command):
-        xpos = 1
-        ypos = command.index("y")
-        x = int(command[xpos:ypos])
-        
-        if "GREY" in command:
-            greypos = command.index("GREY")
-            y = int(command[ypos + 1:greypos])
-            colour = wx.LIGHT_GREY
-        else:
-            rpos = command.index("r")
-            gpos = command.index("g")
-            bpos = command.index("b")
-            
-            y = int(command[ypos + 1:rpos])
-            red = int(command[rpos + 1:gpos])
-            grn = int(command[gpos + 1:bpos])
-            blu = int(command[bpos + 1:len(command)])
-            
-            colour = (red, grn, blu)
-        
-        self.btns[x][y].SetBackgroundColour(colour)
-        self.btns[x][y].Refresh()
-            
-        

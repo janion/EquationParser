@@ -35,6 +35,8 @@ def displayFunction(window, functionText):
                     break
             if exitThread:
                 break
+
+        wx.CallAfter(window.Refresh)
         
         if not exitThread:
             time.sleep(0.1)
