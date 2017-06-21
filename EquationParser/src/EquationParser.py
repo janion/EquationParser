@@ -368,37 +368,37 @@ class Equation():
                 substr = self.getBracketContents(string[pos:len(string)])
                 variable = self.parseEquation(substr)
                 pos += len(substr) + 2
-            elif string[pos : pos + 3] == self.SIN:
+            elif len(string) >= pos + 3 and string[pos : pos + 3] == self.SIN:
                 variable = Sin(self)
                 arg = self.getBracketContents(string[pos + 3 : len(string)])
                 variable.setVar1(self.parseEquation(arg))
                 pos += 3 + len(arg) + 2
-            elif string[pos : pos + 3] == self.COS:
+            elif len(string) >= pos + 3 and string[pos : pos + 3] == self.COS:
                 variable = Cos(self)
                 arg = self.getBracketContents(string[pos + 3 : len(string)])
                 variable.setVar1(self.parseEquation(arg))
                 pos += 3 + len(arg) + 2
-            elif string[pos : pos + 3] == self.TAN:
+            elif len(string) >= pos + 3 and string[pos : pos + 3] == self.TAN:
                 variable = Tan(self)
                 arg = self.getBracketContents(string[pos + 3 : len(string)])
                 variable.setVar1(self.parseEquation(arg))
                 pos += 3 + len(arg) + 2
-            elif string[pos : pos + 3] == self.EXP:
+            elif len(string) >= pos + 3 and string[pos : pos + 3] == self.EXP:
                 variable = Exp(self)
                 arg = self.getBracketContents(string[pos + 3 : len(string)])
                 variable.setVar1(self.parseEquation(arg))
                 pos += 3 + len(arg) + 2
-            elif string[pos : pos + 3] == self.LOG:
+            elif len(string) >= pos + 3 and string[pos : pos + 3] == self.LOG:
                 variable = Log(self)
                 arg = self.getBracketContents(string[pos + 3 : len(string)])
                 variable.setVar1(self.parseEquation(arg))
                 pos += 3 + len(arg) + 2
-            elif string[pos : pos + 3] == self.ABS:
+            elif len(string) >= pos + 3 and string[pos : pos + 3] == self.ABS:
                 variable = Abs(self)
                 arg = self.getBracketContents(string[pos + 3 : len(string)])
                 variable.setVar1(self.parseEquation(arg))
                 pos += 3 + len(arg) + 2
-            elif string[pos : pos + 4] == self.SQRT:
+            elif len(string) >= pos + 4 and string[pos : pos + 4] == self.SQRT:
                 variable = Sqrt(self)
                 arg = self.getBracketContents(string[pos + 4 : len(string)])
                 variable.setVar1(self.parseEquation(arg))
