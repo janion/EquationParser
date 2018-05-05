@@ -1,4 +1,5 @@
 - Add tests
 - Refactor classes into package structure
-- Handle multiplications without * symbol? eg "2x" or "x(x+1)"
+- Handle multiplications without * symbol? eg. "2x" or "x(x+1)"
 - Handle arbitrary constant names (single letter? multiple letter?)
+  - This has been done in my java port for single letters at least
