@@ -12,7 +12,7 @@ def assertEquals(expected, actual):
     global failed
     if expected != actual:
         failed = True
-        print expected + " != " + actual
+        print(expected + " != " + actual)
 
 if __name__ == '__main__':
     o = OrderOfOperations()
@@ -43,4 +43,4 @@ if __name__ == '__main__':
                  o.addBrackets("sin(1*(2+3)*2*2^1) + sin(1*(2+3)*2*2^1)"))
 
     if failed:
-        print "\nFAIL"
+        print("\nFAIL")
