@@ -430,7 +430,7 @@ class Equation():
     
     def parseNumber(self, string):
         copy = ""
-        for pos in xrange(len(string)):
+        for pos in range(len(string)):
             char = string[pos]
             if char in self.NUMERALS:
                 copy += char

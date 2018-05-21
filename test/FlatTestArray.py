@@ -14,10 +14,10 @@ class Window(wx.Frame):
         self.panel = wx.Panel(self, -1)
         self.SetMinSize(self.GetSize())
         
-        self.btns = [[None for y in xrange(self.SIZE)] for x in xrange(self.SIZE)]
+        self.btns = [[None for y in range(self.SIZE)] for x in range(self.SIZE)]
         
-        for x in xrange(self.SIZE):
-            for y in xrange(self.SIZE):
+        for x in range(self.SIZE):
+            for y in range(self.SIZE):
                 self.btns[x][y] = wx.StaticText(self.panel, -1, '', pos=(10 + (30 * x), 10 + (30 * y)), size=(25, 25))
                 self.btns[x][y].Enable(False)
                 self.btns[x][y].SetBackgroundColour(wx.LIGHT_GREY)

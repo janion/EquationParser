@@ -21,8 +21,8 @@ def displayFunction(window, functionText):
     
     while True:
         now = time.time()
-        for x in xrange(window.SIZE):
-            for y in xrange(window.SIZE):
+        for x in range(window.SIZE):
+            for y in range(window.SIZE):
                 val = function.evaluate(x, y, now - start)
                 try:
                     window.IsActive()
